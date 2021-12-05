@@ -95,13 +95,13 @@ print("Shape of Z: " + str(Z.shape))
 lam = 0.1
 
 def min_w_regpoly(w_regpoly):
-  return np.linalg.norm(Z @ w_regpoly - np.ravel(ydata))**2
+  return np.linalg.norm(Z @ w_regpoly - np.ravel(ydata))**2  + lam * np.linalg.norm(w_poly)**2
 
 # We will use scipy.optimize.minimize
 w_poly = minimize(min_w_regpoly, np.zeros((Q,1)))
 print("Optimizer exited successfully?: ", str(w_poly.success), ", Message: ", w_poly.message)
 w_poly = w_poly.x
-w_poly += lam * np.absolute(w_poly)**2
+w_poly
 
 # Visualize w_poly, which should have shape (Q,1)
 print(w_poly)
@@ -200,4 +200,9 @@ plt.ylim(-20, 20)
 plt.plot(x_hypothesis_function,y_hypothesis_function)
 
 ### With the regularization in place, we have optimized the function at Q=6.
-# We now have error rates of 97 for training and 213 for testing.
+# We now have error rates of 95.76071044 for training and 207.84533215 for testing.
+# With the low lambda value, these are almost identical with our linear regression
+# without regularization
+
+### With a lambda of 100, our error rates slightly fell
+# training: 95.76071043, testing: 207.84535233
